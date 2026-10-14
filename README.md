@@ -89,7 +89,7 @@ macOS 自带的活动监视器把微信大文件、看视频等**国内直连流
 如果你想在本地折腾代码：
 
 ```bash
-git clone https://github.com/your-username/MihomoMonitor.git
+git clone https://github.com/Jolly-J/MihomoMonitor.git
 cd MihomoMonitor
 open "MihomoMonitor/MihomoMonitor.xcodeproj"
 ```
