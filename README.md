@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/License-MIT-purple" alt="License" />
 </p>
 
-[📥 下载 v0.1-beta DMG 安装包](release/MihomoMonitor-v0.1-beta.dmg) · [✨ 功能特点](#-功能特点) · [🤝 欢迎共创](#-写在前面--欢迎共创)
+[📥 下载 v0.1-beta DMG 安装包](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.1-beta/MihomoMonitor-v0.1-beta.dmg) · [✨ 功能特点](#-功能特点) · [🤝 欢迎共创](#-写在前面--欢迎共创)
 
 </div>
 
@@ -67,9 +67,9 @@ macOS 自带的活动监视器把微信大文件、看视频等**国内直连流
 
 ## 📦 下载与使用
 
-1. 在 [Releases](../../releases) 或本项目 `release/` 目录下载：
-   - **[MihomoMonitor-v0.1-beta.dmg](release/MihomoMonitor-v0.1-beta.dmg)**（DMG 镜像安装包）
-   - **[MihomoMonitor-v0.1-beta.zip](release/MihomoMonitor-v0.1-beta.zip)**（绿色免安装版）
+1. 在 [GitHub Releases 页面](https://github.com/Jolly-J/MihomoMonitor/releases/tag/v0.1-beta) 下载最新安装文件：
+   - **[MihomoMonitor-v0.1-beta.dmg](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.1-beta/MihomoMonitor-v0.1-beta.dmg)**（DMG 镜像安装包，推荐）
+   - **[MihomoMonitor-v0.1-beta.zip](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.1-beta/MihomoMonitor-v0.1-beta.zip)**（绿色免安装版）
 2. 双击打开 DMG，将 **MihomoMonitor** 拖到 **Applications（应用程序）**。
 3. 打开运行即可在顶部菜单栏看到小猫图标。
 
