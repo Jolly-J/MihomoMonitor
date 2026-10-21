@@ -2,7 +2,11 @@
 //  AppState.swift
 //  MihomoMonitor
 //
-//  Created by Jo lin on 2026/10/14.
+//  [架构层级] App / 根状态聚合层
+//  [核心职责] 全局顶层工作模式管理（代理流量 vs 系统监控），并为旧接口提供兼容性桥接与事件分发。
+//  [关键类型] AppState（全局 ObservableObject 单例）
+//  [依赖关系] 依赖 MainViewMode、TrafficViewModel、SystemMonitorViewModel；被 ContentView 及底层服务回调引用。
+//  [并发安全] 标记为 @MainActor，保证所有状态发布均在主线程执行。
 //
 
 import Foundation
@@ -13,77 +17,48 @@ import SwiftUI
 final class AppState: ObservableObject {
     static let shared = AppState()
     
-    @Published var isConnected: Bool = false
-    @Published var proxyDownloadSpeed: Int64 = 0
-    @Published var proxyUploadSpeed: Int64 = 0
-    
-    @Published var todayProxyDownload: Int64 = 0
-    @Published var todayProxyUpload: Int64 = 0
-    @Published var allTimeProxyDownload: Int64 = 0
-    @Published var allTimeProxyUpload: Int64 = 0
-    
-    @Published var topApps: [AppTrafficStat] = []
-    @Published var topDomains: [DomainTrafficStat] = []
-    @Published var topProxies: [ProxyTrafficStat] = []
-    @Published var activeConnections: [ActiveConnItem] = []
-    
-    @Published var selectedTab: MonitorTab = .apps
-    @Published var selectedTimeRange: TimeRange = .today {
+    // MARK: - Top-level Mode Switcher
+    @Published var mainMode: MainViewMode = .proxy {
         didSet {
-            refreshStats()
+            if mainMode == .system {
+                SystemMonitorViewModel.shared.start()
+            } else {
+                SystemMonitorViewModel.shared.stop()
+            }
         }
     }
     
-    @Published var domainSearchText: String = ""
+    private init() {}
     
-    var filteredDomains: [DomainTrafficStat] {
-        if domainSearchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return topDomains
-        }
-        return topDomains.filter { $0.host.localizedCaseInsensitiveContains(domainSearchText) }
-    }
-    
-    private var statsRefreshCounter = 0
-    
-    private init() {
-        refreshStats()
-    }
-    
+    // MARK: - Proxy Traffic Delegate (Backward Compatibility)
     func update(
         isConnected: Bool,
         proxySpeedDown: Int64,
         proxySpeedUp: Int64,
         activeConns: [ActiveConnItem]
     ) {
-        self.isConnected = isConnected
-        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
-            self.proxyDownloadSpeed = proxySpeedDown
-            self.proxyUploadSpeed = proxySpeedUp
-        }
-        self.activeConnections = activeConns
-        
-        statsRefreshCounter += 1
-        if statsRefreshCounter % 2 == 0 {
-            refreshStats()
-        }
+        TrafficViewModel.shared.update(
+            isConnected: isConnected,
+            proxySpeedDown: proxySpeedDown,
+            proxySpeedUp: proxySpeedUp,
+            activeConns: activeConns
+        )
     }
     
     func refreshStats() {
-        let start = selectedTimeRange.startDate
-        let apps = DatabaseManager.shared.getTopApps(startDate: start, limit: 50)
-        let domains = DatabaseManager.shared.getTopDomains(startDate: start, limit: 50)
-        let proxies = DatabaseManager.shared.getTopProxies(startDate: start, limit: 50)
-        let todaySummary = DatabaseManager.shared.getSummary(startDate: TimeRange.today.startDate)
-        let allTimeSummary = DatabaseManager.shared.getSummary(startDate: TimeRange.all.startDate)
-        
-        self.topApps = apps
-        self.topDomains = domains
-        self.topProxies = proxies
-        withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
-            self.todayProxyUpload = todaySummary.upload
-            self.todayProxyDownload = todaySummary.download
-            self.allTimeProxyUpload = allTimeSummary.upload
-            self.allTimeProxyDownload = allTimeSummary.download
-        }
+        TrafficViewModel.shared.refreshStats()
+    }
+    
+    // MARK: - System Metrics Delegate (Backward Compatibility)
+    func updateSystemMetrics(
+        global: SystemGlobalMetrics,
+        topCpu: [SystemProcessItem],
+        topMemory: [SystemProcessItem]
+    ) {
+        SystemMonitorViewModel.shared.updateMetrics(
+            global: global,
+            topCpu: topCpu,
+            topMemory: topMemory
+        )
     }
 }

@@ -6,17 +6,17 @@
 ### 专注「代理流量」的 macOS 菜单栏统计小工具
 
 <p>
-  <img src="https://img.shields.io/badge/Version-v0.1--beta-blue" alt="Version" />
-  <img src="https://img.shields.io/badge/Platform-macOS%2013%2B-lightgrey?logo=apple" alt="macOS" />
+  <img src="https://img.shields.io/badge/Version-v0.2.0-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/Platform-macOS%2014%2B-lightgrey?logo=apple" alt="macOS" />
   <img src="https://img.shields.io/badge/Swift-6.0-orange?logo=swift" alt="Swift 6" />
   <img src="https://img.shields.io/badge/UI-SwiftUI-cyan?logo=swift" alt="SwiftUI" />
   <img src="https://img.shields.io/badge/License-MIT-purple" alt="License" />
 </p>
 
 **只要走代理，统统看得清。**  
-自动过滤国内直连，常驻 Mac 菜单栏，清晰记录各个应用程序、浏览器、终端脚本以及各类 AI 软件消耗的上传与下载流量。
+自动过滤国内直连，常驻 Mac 菜单栏，清晰记录各个应用程序、浏览器、终端脚本以及各类 AI 软件消耗的上传与下载流量；并内置纯原生 macOS 系统性能监控。
 
-[📥 下载 v0.1-beta DMG 安装包](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.1-beta/MihomoMonitor-v0.1-beta.dmg) · [✨ 功能特点](#-功能特点) · [🤝 欢迎共创](#-写在前面--欢迎共创)
+[📥 下载 v0.2.0 DMG 安装包](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.0/MihomoMonitor-v0.2.0.dmg) · [✨ 功能特点](#-功能特点) · [🤝 欢迎共创](#-写在前面--欢迎共创)
 
 </div>
 
@@ -50,6 +50,7 @@
 
 - **只统计代理流量**：自动过滤 Direct 直连与 Reject，100% 专注走代理出海的流量消耗。
 - **全应用自动归因**：无论是 Chrome/Safari 等浏览器、日常出海软件、终端命令行，还是各类 AI 编程助手与 Agent，全部自动识别所属进程并展示对应图标。
+- **原生系统监控**：基于纯原生 Darwin C 接口（零子进程），实时监控主机全核 CPU 绝对利用率、物理内存真实用量与 Top 进程动态排行，附带丝滑排序过渡动效。
 - **多维度查看**：
   - **应用排行**：直观看到各个软件消耗的上传与下载量以及占比；
   - **域名透视**：查看哪些大模型 API 或外网域名流量最高，支持即时搜索与复制；
@@ -63,9 +64,9 @@
 
 ## 🤝 写在前面 & 欢迎共创！
 
-目前这个工具还处于 **v0.1-beta** 早期阶段，因为最初是针对我个人的使用环境开发，所以目前：
-- **仅支持 macOS 系统**；
-- **仅支持了 Mihomo 内核**（测试基于开启服务模式的 Clash Verge Rev）。
+目前这个工具处于 **v0.2.0** 阶段，专为 macOS 打造：
+- **仅支持 macOS 系统（macOS 14+）**；
+- **代理流量目前适配 Mihomo 内核**（测试基于开启服务模式的 Clash Verge Rev）。
 
 如果大家平时用别的客户端、别的内核（比如 Sing-box 等），或者有更好的交互想法，非常欢迎提 Issue、PR 或者一起讨论。代码很简单轻量，希望有兴趣的朋友一起共创，让它支持更多软件和内核！
 
@@ -73,9 +74,9 @@
 
 ## 📦 下载与使用
 
-1. 在 [GitHub Releases 页面](https://github.com/Jolly-J/MihomoMonitor/releases/tag/v0.1-beta) 下载最新安装文件：
-   - **[MihomoMonitor-v0.1-beta.dmg](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.1-beta/MihomoMonitor-v0.1-beta.dmg)**（DMG 镜像安装包，推荐）
-   - **[MihomoMonitor-v0.1-beta.zip](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.1-beta/MihomoMonitor-v0.1-beta.zip)**（绿色免安装版）
+1. 在 [GitHub Releases 页面](https://github.com/Jolly-J/MihomoMonitor/releases/tag/v0.2.0) 下载最新安装文件：
+   - **[MihomoMonitor-v0.2.0.dmg](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.0/MihomoMonitor-v0.2.0.dmg)**（DMG 镜像安装包，推荐）
+   - **[MihomoMonitor-v0.2.0.zip](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.0/MihomoMonitor-v0.2.0.zip)**（绿色免安装版）
 2. 双击打开 DMG，将 **MihomoMonitor** 拖到 **Applications（应用程序）**。
 3. 打开运行即可在顶部菜单栏看到小猫图标。
 

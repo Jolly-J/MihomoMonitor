@@ -2,23 +2,19 @@
 //  MihomoMonitorApp.swift
 //  MihomoMonitor
 //
-//  Created by Jo lin on 2026/10/14.
+//  [架构层级] App / 应用入口
+//  [核心职责] SwiftUI App 协议入口点，绑定 AppDelegate 生命周期，配置 MenuBarExtra 菜单栏常驻交互与主面板窗口。
+//  [关键类型] MihomoMonitorApp (@main)
+//  [依赖关系] 依赖 AppDelegate、ContentView
+//  [并发安全] UI 线程由 SwiftUI 运行时负责调度。
 //
 
 import SwiftUI
 import AppKit
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApplication.shared.setActivationPolicy(.accessory)
-        TrafficTracker.shared.start()
-    }
-}
-
 @main
 struct MihomoMonitorApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @ObservedObject private var appState = AppState.shared
     
     var body: some Scene {
         MenuBarExtra {

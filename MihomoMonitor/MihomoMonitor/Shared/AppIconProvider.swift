@@ -2,7 +2,11 @@
 //  AppIconProvider.swift
 //  MihomoMonitor
 //
-//  Created by Jo lin on 2026/10/14.
+//  [架构层级] Shared / 资源缓存服务
+//  [核心职责] 基于 macOS 系统工作区（NSWorkspace）提取应用原生高精度图标，内置别名映射表与内存图标缓存（NSImage），降低渲染开销。
+//  [关键类型] AppIconProvider（单例）
+//  [依赖关系] 依赖 AppKit、SwiftUI；供 AppIconBadgeView 与 SystemAppIconBadgeView 共享使用。
+//  [并发安全] 内部缓存字典通过 NSLock 实现线程安全保护。
 //
 
 import AppKit
@@ -28,6 +32,23 @@ final class AppIconProvider: @unchecked Sendable {
     ]
     
     private init() {}
+    
+    func icon(for appName: String, path: String? = nil) -> NSImage? {
+        lock.lock()
+        if let cached = iconCache[appName] {
+            lock.unlock()
+            return cached
+        }
+        lock.unlock()
+        
+        if let path = path, !path.isEmpty && FileManager.default.fileExists(atPath: path) {
+            let icon = NSWorkspace.shared.icon(forFile: path)
+            saveCache(name: appName, icon: icon)
+            return icon
+        }
+        
+        return icon(for: appName)
+    }
     
     func icon(for appName: String) -> NSImage? {
         lock.lock()
@@ -83,73 +104,5 @@ final class AppIconProvider: @unchecked Sendable {
         lock.lock()
         iconCache[name] = icon
         lock.unlock()
-    }
-}
-
-// MARK: - SwiftUI App Icon View
-struct AppIconBadgeView: View {
-    let appName: String
-    let size: CGFloat
-    
-    init(appName: String, size: CGFloat = 26) {
-        self.appName = appName
-        self.size = size
-    }
-    
-    var body: some View {
-        if let nsImage = AppIconProvider.shared.icon(for: appName) {
-            Image(nsImage: nsImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: size, height: size)
-                .cornerRadius(5)
-        } else {
-            // Elegant SF Symbol fallback - NO letters!
-            ZStack {
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(fallbackBackgroundColor)
-                    .frame(width: size, height: size)
-                Image(systemName: fallbackSymbolName)
-                    .font(.system(size: size * 0.52, weight: .medium))
-                    .foregroundColor(fallbackForegroundColor)
-            }
-        }
-    }
-    
-    private var isCommandLine: Bool {
-        let lower = appName.lowercased()
-        return lower == "curl" || lower == "git" || lower == "python" || lower == "python3" ||
-               lower == "node" || lower == "zsh" || lower == "bash" || lower == "ssh" ||
-               lower == "brew" || lower.contains("language_server") || lower.contains("helper")
-    }
-    
-    private var fallbackSymbolName: String {
-        if isCommandLine {
-            return "terminal.fill"
-        } else if appName == "系统/其他" {
-            return "network"
-        } else {
-            return "app.fill"
-        }
-    }
-    
-    private var fallbackBackgroundColor: Color {
-        if isCommandLine {
-            return Color.black.opacity(0.12)
-        } else if appName == "系统/其他" {
-            return Color.blue.opacity(0.12)
-        } else {
-            return Color.secondary.opacity(0.15)
-        }
-    }
-    
-    private var fallbackForegroundColor: Color {
-        if isCommandLine {
-            return Color.primary.opacity(0.7)
-        } else if appName == "系统/其他" {
-            return Color.blue
-        } else {
-            return Color.secondary
-        }
     }
 }

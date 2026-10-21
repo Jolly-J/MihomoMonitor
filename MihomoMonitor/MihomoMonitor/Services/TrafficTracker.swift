@@ -2,7 +2,11 @@
 //  TrafficTracker.swift
 //  MihomoMonitor
 //
-//  Created by Jo lin on 2026/10/14.
+//  [架构层级] Services / 流量监控采集编排
+//  [核心职责] 长驻后台轮询调度器，定期从 MihomoClient 拉取活跃连接快照，对比识别已关闭连接，计算流量差额并持久化归档至 DatabaseManager，同时更新 UI 活跃连接列表。
+//  [关键类型] TrafficTracker（单例）, TrackedConnectionState
+//  [依赖关系] 依赖 MihomoClient、ProcessResolver、DatabaseManager、TrafficViewModel
+//  [并发安全] 使用 Swift 结构化并发 Task 与内部锁保护活跃连接字典。
 //
 
 import Foundation

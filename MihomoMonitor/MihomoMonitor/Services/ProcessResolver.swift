@@ -2,7 +2,11 @@
 //  ProcessResolver.swift
 //  MihomoMonitor
 //
-//  Created by Jo lin on 2026/10/14.
+//  [架构层级] Services / 进程标识解析器
+//  [核心职责] 将网络连接的进程源信息或 PID / 路径解析为 macOS 友好应用展示名称与 Bundle ID，内置锁保护的内存缓存加速解析。
+//  [关键类型] ProcessResolver（单例）
+//  [依赖关系] 依赖 Foundation、AppKit
+//  [并发安全] 内部状态受 NSLock 互斥锁保护，保证跨线程并发访问安全。
 //
 
 import Foundation

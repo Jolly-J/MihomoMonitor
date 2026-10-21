@@ -2,7 +2,11 @@
 //  MihomoClient.swift
 //  MihomoMonitor
 //
-//  Created by Jo lin on 2026/10/14.
+//  [架构层级] Services / Mihomo / 客户端网络通信
+//  [核心职责] 管理与本地 Mihomo/Clash Verge 外部控制器的通信连接，自动探测可用端点（Unix Socket / HTTP RESTful API），拉取连接快照与实时流量流。
+//  [关键类型] MihomoClient（单例）, EndpointType
+//  [依赖关系] 依赖 Foundation、Darwin、MihomoAPIModels
+//  [并发安全] 使用 URLSession 异步网络请求，数据解析在并发任务中执行。
 //
 
 import Foundation
