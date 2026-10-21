@@ -11,14 +11,18 @@
 
 import SwiftUI
 
+@MainActor
 struct TrafficDashboardView: View {
     let isConnected: Bool
     let allTimeDownload: Int64
     let allTimeUpload: Int64
     let downloadSpeed: Int64
     let uploadSpeed: Int64
-    let todayDownload: Int64
-    let todayUpload: Int64
+    let rangeDownload: Int64
+    let rangeUpload: Int64
+    // 与筛选范围一致的累计标签，以及可悬停查看的连接/落盘错误。
+    let rangeLabel: String
+    let statusDetail: String
     
     var body: some View {
         VStack(spacing: 11) {
@@ -31,6 +35,7 @@ struct TrafficDashboardView: View {
                         .shadow(color: isConnected ? Color.green.opacity(0.5) : Color.red.opacity(0.3), radius: 2)
                     
                     Text(isConnected ? "Mihomo 代理已连接" : "Mihomo 未连接")
+                        .help(statusDetail)
                         .font(.system(size: 11.5, weight: .semibold))
                         .foregroundStyle(.primary)
                 }
@@ -109,10 +114,10 @@ struct TrafficDashboardView: View {
                     }
                     
                     HStack(spacing: 3) {
-                        Text("今日走代理")
+                        Text(rangeLabel)
                             .font(.system(size: 10))
                             .foregroundStyle(.tertiary)
-                        Text("↓ \(FormatUtils.formatBytes(todayDownload))")
+                        Text("↓ \(FormatUtils.formatBytes(rangeDownload))")
                             .font(.system(size: 10, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                             .contentTransition(.numericText())
@@ -160,10 +165,10 @@ struct TrafficDashboardView: View {
                     }
                     
                     HStack(spacing: 3) {
-                        Text("今日走代理")
+                        Text(rangeLabel)
                             .font(.system(size: 10))
                             .foregroundStyle(.tertiary)
-                        Text("↑ \(FormatUtils.formatBytes(todayUpload))")
+                        Text("↑ \(FormatUtils.formatBytes(rangeUpload))")
                             .font(.system(size: 10, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                             .contentTransition(.numericText())

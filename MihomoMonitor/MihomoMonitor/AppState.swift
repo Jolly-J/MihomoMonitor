@@ -19,15 +19,27 @@ final class AppState: ObservableObject {
     
     // MARK: - Top-level Mode Switcher
     @Published var mainMode: MainViewMode = .proxy {
-        didSet {
-            if mainMode == .system {
-                SystemMonitorViewModel.shared.start()
-            } else {
-                SystemMonitorViewModel.shared.stop()
-            }
+        didSet { updateVisibility() }
+    }
+
+    // 面板生命周期和模式共同决定展示查询/系统采集，流量采集始终独立运行。
+    private var isPanelVisible = false
+
+    /// 由顶层 View 的真实出现/消失事件驱动。
+    func setPanelVisible(_ visible: Bool) {
+        isPanelVisible = visible
+        updateVisibility()
+    }
+
+    private func updateVisibility() {
+        TrafficViewModel.shared.setVisible(isPanelVisible && mainMode == .proxy)
+        if isPanelVisible && mainMode == .system {
+            SystemMonitorViewModel.shared.start()
+        } else {
+            SystemMonitorViewModel.shared.stop()
         }
     }
-    
+
     private init() {}
     
     // MARK: - Proxy Traffic Delegate (Backward Compatibility)
@@ -35,13 +47,15 @@ final class AppState: ObservableObject {
         isConnected: Bool,
         proxySpeedDown: Int64,
         proxySpeedUp: Int64,
-        activeConns: [ActiveConnItem]
+        activeConns: [ActiveConnItem],
+        connectionError: String? = nil
     ) {
         TrafficViewModel.shared.update(
             isConnected: isConnected,
             proxySpeedDown: proxySpeedDown,
             proxySpeedUp: proxySpeedUp,
-            activeConns: activeConns
+            activeConns: activeConns,
+            connectionError: connectionError
         )
     }
     

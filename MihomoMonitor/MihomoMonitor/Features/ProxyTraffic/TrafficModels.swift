@@ -13,7 +13,7 @@ import Foundation
 import AppKit
 
 // MARK: - Time Range
-enum TimeRange: String, CaseIterable, Identifiable {
+nonisolated enum TimeRange: String, CaseIterable, Identifiable {
     case today = "今天"
     case week = "近7天"
     case all = "全部"
@@ -36,7 +36,7 @@ enum TimeRange: String, CaseIterable, Identifiable {
 }
 
 // MARK: - Navigation Tabs
-enum MonitorTab: String, CaseIterable, Identifiable {
+nonisolated enum MonitorTab: String, CaseIterable, Identifiable {
     case apps = "应用"
     case domains = "域名"
     case proxies = "节点"
@@ -55,7 +55,7 @@ enum MonitorTab: String, CaseIterable, Identifiable {
 }
 
 // MARK: - App Traffic Stat
-struct AppTrafficStat: Identifiable {
+nonisolated struct AppTrafficStat: Identifiable {
     var id: String { appName }
     let appName: String
     let uploadBytes: Int64
@@ -65,7 +65,7 @@ struct AppTrafficStat: Identifiable {
 }
 
 // MARK: - Domain Traffic Stat
-struct DomainTrafficStat: Identifiable {
+nonisolated struct DomainTrafficStat: Identifiable {
     var id: String { host }
     let host: String
     let uploadBytes: Int64
@@ -75,7 +75,7 @@ struct DomainTrafficStat: Identifiable {
 }
 
 // MARK: - Proxy Traffic Stat
-struct ProxyTrafficStat: Identifiable {
+nonisolated struct ProxyTrafficStat: Identifiable {
     var id: String { nodeName }
     let nodeName: String
     let uploadBytes: Int64
@@ -85,7 +85,7 @@ struct ProxyTrafficStat: Identifiable {
 }
 
 // MARK: - Active Connection Item
-struct ActiveConnItem: Identifiable {
+nonisolated struct ActiveConnItem: Identifiable {
     let id: String
     let appName: String
     let host: String
@@ -99,16 +99,33 @@ struct ActiveConnItem: Identifiable {
     let startTime: Date
 }
 
-// MARK: - Closed Connection Record (Persistence)
-struct ClosedConnectionRecord {
-    let id: String
-    let dateStr: String
+// MARK: - Durable sampling contract
+/// 单个快照的累计计数；以核心连接 ID 和原始 start 字段共同标识，重启后仍可去重。
+nonisolated struct TrafficCheckpoint: Sendable {
+    let connectionID: String
+    let startToken: String
     let appName: String
     let host: String
     let destinationIP: String
     let proxyNode: String
-    let uploadBytes: Int64
-    let downloadBytes: Int64
-    let startTime: Int64
-    let endTime: Int64
+    let upload: Int64
+    let download: Int64
+    let startedAt: Date
+    let observedAt: Date
+    let isClosed: Bool
+
+    /// JSON 数组编码避免 ID / 时间串拼接产生分隔符碰撞。
+    var identity: String {
+        let data = try! JSONEncoder().encode([connectionID, startToken])
+        return String(decoding: data, as: UTF8.self)
+    }
+}
+
+/// 同一次数据库队列读取返回的报表快照，便于 ViewModel 拒绝过时结果及注入临时数据测试。
+nonisolated struct DashboardStats {
+    var apps: [AppTrafficStat] = []
+    var domains: [DomainTrafficStat] = []
+    var proxies: [ProxyTrafficStat] = []
+    var summary: (upload: Int64, download: Int64) = (0, 0)
+    var allTimeSummary: (upload: Int64, download: Int64) = (0, 0)
 }

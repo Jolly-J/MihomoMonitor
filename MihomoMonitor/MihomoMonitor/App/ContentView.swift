@@ -12,6 +12,7 @@
 import SwiftUI
 import AppKit
 
+@MainActor
 struct ContentView: View {
     @ObservedObject var appState = AppState.shared
     @ObservedObject var trafficVM = TrafficViewModel.shared
@@ -38,8 +39,10 @@ struct ContentView: View {
                     allTimeUpload: trafficVM.allTimeProxyUpload,
                     downloadSpeed: trafficVM.proxyDownloadSpeed,
                     uploadSpeed: trafficVM.proxyUploadSpeed,
-                    todayDownload: trafficVM.todayProxyDownload,
-                    todayUpload: trafficVM.todayProxyUpload
+                    rangeDownload: trafficVM.rangeProxyDownload,
+                    rangeUpload: trafficVM.rangeProxyUpload,
+                    rangeLabel: trafficVM.rangeSummaryLabel,
+                    statusDetail: trafficVM.statusDetail
                 )
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -85,13 +88,9 @@ struct ContentView: View {
         }
         .frame(width: 440, height: 570)
         .background(Color(NSColor.windowBackgroundColor))
-        .onAppear {
-            if appState.mainMode == .system {
-                systemVM.start()
-            }
-        }
+        .background(PanelVisibilityObserver { appState.setPanelVisible($0) })
         .onDisappear {
-            systemVM.stop()
+            appState.setPanelVisible(false)
         }
     }
     
@@ -157,7 +156,7 @@ struct ContentView: View {
                 }
             }
         case .domains:
-            let list = trafficVM.filteredDomains
+            let list = trafficVM.topDomains
             if list.isEmpty {
                 emptyState(title: "无匹配域名记录", subtitle: "通过代理访问的网站将自动聚合在此")
             } else {
@@ -262,7 +261,8 @@ struct ContentView: View {
                 .buttonStyle(.plain)
                 .help("刷新统计")
                 
-                Text("仅统计代理流量 · 本地 SQLite 持久化")
+                Text(trafficVM.persistenceError == nil ? "代理快照估算 · 约15秒保存" : "保存失败，待重试")
+                    .help(trafficVM.persistenceError ?? "两次轮询间的短连接及末次快照后的尾流量无法恢复；跨日按采样间隔估算。")
                     .font(.system(size: 10))
                     .foregroundStyle(.tertiary)
             } else {

@@ -210,11 +210,7 @@ final class SystemMetricsCollector: @unchecked Sendable {
         )
         
         Task { @MainActor in
-            SystemMonitorViewModel.shared.updateMetrics(
-                global: globalMetrics,
-                topCpu: Array(topCpu),
-                topMemory: Array(topMem)
-            )
+            // 统一经 AppState 转发一次，避免重复发布同一采样。
             AppState.shared.updateSystemMetrics(
                 global: globalMetrics,
                 topCpu: Array(topCpu),

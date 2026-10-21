@@ -15,12 +15,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// 应用启动完成回调：设置应用为轻量级菜单栏辅助应用（无 Dock 图标），启动流量监控后台调度
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApplication.shared.setActivationPolicy(.accessory)
-        TrafficTracker.shared.start()
+        Task { await TrafficTracker.shared.start() }
     }
     
-    /// 应用即将退出回调：安全关闭后台轮询与系统采样服务
-    func applicationWillTerminate(_ notification: Notification) {
-        TrafficTracker.shared.stop()
+    /// 使用异步退出协议，等待已观察流量落盘；写入失败时取消退出并明确告知原因。
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         SystemMetricsCollector.shared.stop()
+        Task { @MainActor in
+            let saved = await TrafficTracker.shared.stop()
+            if !saved {
+                let alert = NSAlert()
+                alert.messageText = "流量检查点未能保存，已取消退出"
+                alert.informativeText = TrafficViewModel.shared.persistenceError ?? "请检查数据库权限或可用磁盘空间后重试。"
+                alert.runModal()
+                await TrafficTracker.shared.start()
+            }
+            sender.reply(toApplicationShouldTerminate: saved)
+        }
+        return .terminateLater
     }
 }

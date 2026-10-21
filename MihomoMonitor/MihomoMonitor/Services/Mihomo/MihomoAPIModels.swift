@@ -12,13 +12,13 @@
 import Foundation
 
 // MARK: - Mihomo JSON API Models
-struct MihomoConnectionsSnapshot: Decodable {
+nonisolated struct MihomoConnectionsSnapshot: Decodable, Sendable {
     let downloadTotal: Int64
     let uploadTotal: Int64
     let connections: [MihomoRawConnection]
 }
 
-struct MihomoRawConnection: Decodable {
+nonisolated struct MihomoRawConnection: Decodable, Sendable {
     let id: String
     let upload: Int64
     let download: Int64
@@ -29,7 +29,7 @@ struct MihomoRawConnection: Decodable {
     let metadata: MihomoMetadata
 }
 
-struct MihomoMetadata: Decodable {
+nonisolated struct MihomoMetadata: Decodable, Sendable {
     let network: String?
     let type: String?
     let sourceIP: String?

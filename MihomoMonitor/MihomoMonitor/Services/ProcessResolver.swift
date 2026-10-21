@@ -12,7 +12,7 @@
 import Foundation
 import AppKit
 
-final class ProcessResolver: @unchecked Sendable {
+nonisolated final class ProcessResolver: @unchecked Sendable {
     static let shared = ProcessResolver()
     
     private let lock = NSLock()

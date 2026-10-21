@@ -6,7 +6,7 @@
 ### 专注「代理流量」的 macOS 菜单栏统计小工具
 
 <p>
-  <img src="https://img.shields.io/badge/Version-v0.2.0-blue" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-v0.2.1-blue" alt="Version" />
   <img src="https://img.shields.io/badge/Platform-macOS%2014%2B-lightgrey?logo=apple" alt="macOS" />
   <img src="https://img.shields.io/badge/Swift-6.0-orange?logo=swift" alt="Swift 6" />
   <img src="https://img.shields.io/badge/UI-SwiftUI-cyan?logo=swift" alt="SwiftUI" />
@@ -16,7 +16,7 @@
 **只要走代理，统统看得清。**  
 自动过滤国内直连，常驻 Mac 菜单栏，清晰记录各个应用程序、浏览器、终端脚本以及各类 AI 软件消耗的上传与下载流量；并内置纯原生 macOS 系统性能监控。
 
-[📥 下载 v0.2.0 DMG 安装包](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.0/MihomoMonitor-v0.2.0.dmg) · [✨ 功能特点](#-功能特点) · [🤝 欢迎共创](#-写在前面--欢迎共创)
+[📥 下载 v0.2.1 DMG 安装包](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.1/MihomoMonitor-v0.2.1.dmg) · [✨ 功能特点](#-功能特点) · [🤝 欢迎共创](#-写在前面--欢迎共创)
 
 </div>
 
@@ -64,7 +64,7 @@
 
 ## 🤝 写在前面 & 欢迎共创！
 
-目前这个工具处于 **v0.2.0** 阶段，专为 macOS 打造：
+目前这个工具处于 **v0.2.1** 阶段，专为 macOS 打造：
 - **仅支持 macOS 系统（macOS 14+）**；
 - **代理流量目前适配 Mihomo 内核**（测试基于开启服务模式的 Clash Verge Rev）。
 
@@ -74,9 +74,9 @@
 
 ## 📦 下载与使用
 
-1. 在 [GitHub Releases 页面](https://github.com/Jolly-J/MihomoMonitor/releases/tag/v0.2.0) 下载最新安装文件：
-   - **[MihomoMonitor-v0.2.0.dmg](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.0/MihomoMonitor-v0.2.0.dmg)**（DMG 镜像安装包，推荐）
-   - **[MihomoMonitor-v0.2.0.zip](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.0/MihomoMonitor-v0.2.0.zip)**（绿色免安装版）
+1. 在 [GitHub Releases 页面](https://github.com/Jolly-J/MihomoMonitor/releases/tag/v0.2.1) 下载最新安装文件：
+   - **[MihomoMonitor-v0.2.1.dmg](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.1/MihomoMonitor-v0.2.1.dmg)**（DMG 镜像安装包，推荐）
+   - **[MihomoMonitor-v0.2.1.zip](https://github.com/Jolly-J/MihomoMonitor/releases/download/v0.2.1/MihomoMonitor-v0.2.1.zip)**（绿色免安装版）
 2. 双击打开 DMG，将 **MihomoMonitor** 拖到 **Applications（应用程序）**。
 3. 打开运行即可在顶部菜单栏看到小猫图标。
 
