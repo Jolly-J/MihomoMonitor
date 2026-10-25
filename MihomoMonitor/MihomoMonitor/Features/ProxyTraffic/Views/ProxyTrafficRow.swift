@@ -53,13 +53,20 @@ struct ProxyTrafficRow: View {
                 }
                 .frame(height: 4)
                 
-                Text("分流占比 \(Int(item.percentage * 100))%  ·  ↓ \(FormatUtils.formatBytes(item.downloadBytes))  ↑ \(FormatUtils.formatBytes(item.uploadBytes))")
-                    .font(.system(size: 9.5, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(.secondary)
+                HStack {
+                    Text("分流占比 \(Int(item.percentage * 100))%")
+                        .font(.system(size: 9.5, weight: .medium, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text("↓ \(FormatUtils.formatBytes(item.downloadBytes))   ↑ \(FormatUtils.formatBytes(item.uploadBytes))")
+                        .font(.system(size: 9.5, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.secondary)
+                }
             }
         }
-        .padding(8.5)
+        .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 8.5, style: .continuous)
                 .fill(Color(NSColor.controlBackgroundColor))

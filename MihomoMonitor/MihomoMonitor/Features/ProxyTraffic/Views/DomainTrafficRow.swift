@@ -31,7 +31,7 @@ struct DomainTrafficRow: View {
                     .lineLimit(1)
                     .foregroundStyle(.primary)
                 
-                Text("↓ \(FormatUtils.formatBytes(item.downloadBytes))   ↑ \(FormatUtils.formatBytes(item.uploadBytes))")
+                Text("↓ \(FormatUtils.formatBytes(item.downloadBytes))  ↑ \(FormatUtils.formatBytes(item.uploadBytes))")
                     .font(.system(size: 9.5, design: .rounded))
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
@@ -39,9 +39,9 @@ struct DomainTrafficRow: View {
             
             Spacer()
             
-            HStack(spacing: 6) {
+            HStack(spacing: 5) {
                 Text(FormatUtils.formatBytes(item.totalBytes))
-                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                    .font(.system(size: 11.5, weight: .bold, design: .rounded))
                     .monospacedDigit()
                     .foregroundStyle(.primary)
                 
@@ -54,14 +54,14 @@ struct DomainTrafficRow: View {
                     }
                 } label: {
                     Image(systemName: copied ? "checkmark.circle.fill" : "doc.on.doc")
-                        .font(.system(size: 10))
+                        .font(.system(size: 9.5))
                         .foregroundStyle(copied ? .green : .secondary)
                 }
                 .buttonStyle(.plain)
                 .help("复制域名")
             }
         }
-        .padding(8.5)
+        .padding(7.5)
         .background(
             RoundedRectangle(cornerRadius: 8.5, style: .continuous)
                 .fill(Color(NSColor.controlBackgroundColor))

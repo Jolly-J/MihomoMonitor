@@ -28,59 +28,48 @@ struct TrafficDashboardView: View {
         VStack(spacing: 11) {
             // Status Row
             HStack {
-                HStack(spacing: 6) {
+                HStack(spacing: 5) {
                     Circle()
                         .fill(isConnected ? Color.green : Color.red)
-                        .frame(width: 7.5, height: 7.5)
+                        .frame(width: 7, height: 7)
                         .shadow(color: isConnected ? Color.green.opacity(0.5) : Color.red.opacity(0.3), radius: 2)
                     
                     Text(isConnected ? "Mihomo 代理已连接" : "Mihomo 未连接")
                         .help(statusDetail)
-                        .font(.system(size: 11.5, weight: .semibold))
+                        .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(.primary)
+                        .lineLimit(1)
                 }
                 
                 Spacer()
                 
-                // Fixed-Position Cumulative Proxy Stats
-                HStack(spacing: 4) {
+                // Compact Cumulative Proxy Stats
+                HStack(spacing: 3) {
                     Image(systemName: "arrow.triangle.swap")
-                        .font(.system(size: 9.5))
+                        .font(.system(size: 9))
                         .foregroundStyle(.tertiary)
                     
-                    Text("累计:")
-                        .font(.system(size: 10.5))
-                        .foregroundStyle(.tertiary)
+                    Text("↓")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.blue.opacity(0.85))
+                    Text(FormatUtils.formatBytes(allTimeDownload))
+                        .font(.system(size: 10, weight: .medium, design: .rounded))
+                        .monospacedDigit()
                         .lineLimit(1)
-                    
-                    HStack(spacing: 2) {
-                        Text("↓")
-                            .font(.system(size: 9.5, weight: .semibold))
-                            .foregroundStyle(.blue.opacity(0.85))
-                        Text(FormatUtils.formatBytes(allTimeDownload))
-                            .font(.system(size: 10.5, weight: .medium, design: .rounded))
-                            .monospacedDigit()
-                            .lineLimit(1)
-                            .contentTransition(.numericText())
-                    }
-                    .frame(width: 74, alignment: .leading)
+                        .contentTransition(.numericText())
                     
                     Text("·")
-                        .font(.system(size: 10.5))
+                        .font(.system(size: 9.5))
                         .foregroundStyle(.quaternary)
-                        .lineLimit(1)
                     
-                    HStack(spacing: 2) {
-                        Text("↑")
-                            .font(.system(size: 9.5, weight: .semibold))
-                            .foregroundStyle(.green.opacity(0.85))
-                        Text(FormatUtils.formatBytes(allTimeUpload))
-                            .font(.system(size: 10.5, weight: .medium, design: .rounded))
-                            .monospacedDigit()
-                            .lineLimit(1)
-                            .contentTransition(.numericText())
-                    }
-                    .frame(width: 74, alignment: .leading)
+                    Text("↑")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.green.opacity(0.85))
+                    Text(FormatUtils.formatBytes(allTimeUpload))
+                        .font(.system(size: 10, weight: .medium, design: .rounded))
+                        .monospacedDigit()
+                        .lineLimit(1)
+                        .contentTransition(.numericText())
                 }
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: false)
@@ -88,53 +77,55 @@ struct TrafficDashboardView: View {
             }
             
             // Speed Cards
-            HStack(spacing: 10) {
+            HStack(spacing: 8) {
                 // Download Speed Card
                 let downSpeed = FormatUtils.splitSpeed(downloadSpeed)
                 VStack(alignment: .leading, spacing: 3) {
-                    HStack(spacing: 5) {
+                    HStack(spacing: 4.5) {
                         Image(systemName: "arrow.down.circle.fill")
-                            .font(.system(size: 11.5, weight: .semibold))
+                            .font(.system(size: 11, weight: .semibold))
                             .foregroundStyle(.blue)
-                        Text("代理实时下载")
-                            .font(.system(size: 11, weight: .medium))
+                        Text("实时下载")
+                            .font(.system(size: 10.5, weight: .medium))
                             .foregroundStyle(.secondary)
                     }
                     
-                    HStack(alignment: .firstTextBaseline, spacing: 3) {
+                    HStack(alignment: .firstTextBaseline, spacing: 2.5) {
                         Text(downSpeed.value)
-                            .font(.system(size: 21, weight: .bold, design: .rounded))
+                            .font(.system(size: 19, weight: .bold, design: .rounded))
                             .monospacedDigit()
                             .contentTransition(.numericText())
                             .foregroundStyle(.primary)
                         
                         Text(downSpeed.unit)
-                            .font(.system(size: 11, weight: .semibold, design: .rounded))
+                            .font(.system(size: 10.5, weight: .semibold, design: .rounded))
                             .foregroundStyle(.secondary)
                     }
                     
-                    HStack(spacing: 3) {
+                    HStack(spacing: 2.5) {
                         Text(rangeLabel)
-                            .font(.system(size: 10))
+                            .font(.system(size: 9.5))
                             .foregroundStyle(.tertiary)
                         Text("↓ \(FormatUtils.formatBytes(rangeDownload))")
-                            .font(.system(size: 10, weight: .semibold, design: .rounded))
+                            .font(.system(size: 9.5, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                             .contentTransition(.numericText())
                             .foregroundStyle(.blue)
                     }
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(11)
+                .padding(9.5)
                 .background(
-                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(Color(NSColor.controlBackgroundColor))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(Color.blue.opacity(0.06))
                         )
                         .overlay(
-                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .strokeBorder(Color.blue.opacity(0.22), lineWidth: 1)
                         )
                         .shadow(color: Color.black.opacity(0.04), radius: 3, y: 1)
@@ -143,49 +134,51 @@ struct TrafficDashboardView: View {
                 // Upload Speed Card
                 let upSpeed = FormatUtils.splitSpeed(uploadSpeed)
                 VStack(alignment: .leading, spacing: 3) {
-                    HStack(spacing: 5) {
+                    HStack(spacing: 4.5) {
                         Image(systemName: "arrow.up.circle.fill")
-                            .font(.system(size: 11.5, weight: .semibold))
+                            .font(.system(size: 11, weight: .semibold))
                             .foregroundStyle(.green)
-                        Text("代理实时上传")
-                            .font(.system(size: 11, weight: .medium))
+                        Text("实时上传")
+                            .font(.system(size: 10.5, weight: .medium))
                             .foregroundStyle(.secondary)
                     }
                     
-                    HStack(alignment: .firstTextBaseline, spacing: 3) {
+                    HStack(alignment: .firstTextBaseline, spacing: 2.5) {
                         Text(upSpeed.value)
-                            .font(.system(size: 21, weight: .bold, design: .rounded))
+                            .font(.system(size: 19, weight: .bold, design: .rounded))
                             .monospacedDigit()
                             .contentTransition(.numericText())
                             .foregroundStyle(.primary)
                         
                         Text(upSpeed.unit)
-                            .font(.system(size: 11, weight: .semibold, design: .rounded))
+                            .font(.system(size: 10.5, weight: .semibold, design: .rounded))
                             .foregroundStyle(.secondary)
                     }
                     
-                    HStack(spacing: 3) {
+                    HStack(spacing: 2.5) {
                         Text(rangeLabel)
-                            .font(.system(size: 10))
+                            .font(.system(size: 9.5))
                             .foregroundStyle(.tertiary)
                         Text("↑ \(FormatUtils.formatBytes(rangeUpload))")
-                            .font(.system(size: 10, weight: .semibold, design: .rounded))
+                            .font(.system(size: 9.5, weight: .semibold, design: .rounded))
                             .monospacedDigit()
                             .contentTransition(.numericText())
                             .foregroundStyle(.green)
                     }
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(11)
+                .padding(9.5)
                 .background(
-                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(Color(NSColor.controlBackgroundColor))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(Color.green.opacity(0.06))
                         )
                         .overlay(
-                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .strokeBorder(Color.green.opacity(0.22), lineWidth: 1)
                         )
                         .shadow(color: Color.black.opacity(0.04), radius: 3, y: 1)

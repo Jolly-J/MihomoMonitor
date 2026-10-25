@@ -27,7 +27,7 @@ struct ContentView: View {
         VStack(spacing: 0) {
             // 0. Top Mode Switcher (Proxy Traffic vs System Monitor)
             modeSwitchSection
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 12)
                 .padding(.top, 12)
                 .padding(.bottom, 4)
             
@@ -44,7 +44,7 @@ struct ContentView: View {
                     rangeLabel: trafficVM.rangeSummaryLabel,
                     statusDetail: trafficVM.statusDetail
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 12)
                 .padding(.top, 8)
                 
                 TrafficNavigationView(
@@ -54,7 +54,7 @@ struct ContentView: View {
                     tabAnimation: trafficTabAnimation,
                     rangeAnimation: trafficRangeAnimation
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 12)
                 .padding(.top, 10)
                 .padding(.bottom, 8)
                 
@@ -63,14 +63,14 @@ struct ContentView: View {
             } else {
                 // 2. System Monitor Feature
                 SystemDashboardView(metrics: systemVM.systemMetrics)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .padding(.top, 8)
                 
                 SystemNavigationView(
                     selectedSubTab: $systemVM.selectedSubTab,
                     subTabAnimation: systemSubTabAnimation
                 )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 12)
                 .padding(.top, 10)
                 .padding(.bottom, 8)
                 
@@ -82,11 +82,11 @@ struct ContentView: View {
                 .opacity(0.5)
             
             footerSection
-                .padding(.horizontal, 16)
+                .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(Color(NSColor.windowBackgroundColor))
         }
-        .frame(width: 440, height: 570)
+        .frame(width: 300, height: 570)
         .background(Color(NSColor.windowBackgroundColor))
         .background(PanelVisibilityObserver { appState.setPanelVisible($0) })
         .onDisappear {
@@ -151,7 +151,7 @@ struct ContentView: View {
                             AppTrafficRow(item: item)
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                 }
             }
@@ -166,7 +166,7 @@ struct ContentView: View {
                             DomainTrafficRow(item: item)
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                 }
             }
@@ -180,7 +180,7 @@ struct ContentView: View {
                             ProxyTrafficRow(item: item)
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                 }
             }
@@ -194,7 +194,7 @@ struct ContentView: View {
                             ActiveConnectionRow(item: item)
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                 }
             }
@@ -220,7 +220,7 @@ struct ContentView: View {
                             )
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 4)
                     .animation(.spring(response: 0.38, dampingFraction: 0.82), value: list.map(\.id))
                 }
@@ -261,9 +261,10 @@ struct ContentView: View {
                 .buttonStyle(.plain)
                 .help("刷新统计")
                 
-                Text(trafficVM.persistenceError == nil ? "代理快照估算 · 约15秒保存" : "保存失败，待重试")
+                Text(trafficVM.persistenceError == nil ? "快照估算 · 约15秒保存" : "保存失败，待重试")
                     .help(trafficVM.persistenceError ?? "两次轮询间的短连接及末次快照后的尾流量无法恢复；跨日按采样间隔估算。")
                     .font(.system(size: 10))
+                    .lineLimit(1)
                     .foregroundStyle(.tertiary)
             } else {
                 Text(FormatUtils.formatBatteryStatus(

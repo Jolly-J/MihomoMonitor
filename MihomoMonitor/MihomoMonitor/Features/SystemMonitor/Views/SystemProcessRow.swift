@@ -97,14 +97,14 @@ struct SystemProcessRow: View {
                 }
             }
         }
-        .padding(9)
+        .padding(8)
         .background(
-            RoundedRectangle(cornerRadius: 9, style: .continuous)
+            RoundedRectangle(cornerRadius: 8.5, style: .continuous)
                 .fill(Color(NSColor.controlBackgroundColor))
                 .shadow(color: Color.black.opacity(isHovered ? 0.08 : 0.03), radius: isHovered ? 3 : 1.5, y: 1)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 9, style: .continuous)
+            RoundedRectangle(cornerRadius: 8.5, style: .continuous)
                 .strokeBorder(isHovered ? Color.accentColor.opacity(0.4) : Color.primary.opacity(0.08), lineWidth: 0.5)
         )
         .onHover { isHovered = $0 }

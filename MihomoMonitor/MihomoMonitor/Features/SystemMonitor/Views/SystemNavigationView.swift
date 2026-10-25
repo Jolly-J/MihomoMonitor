@@ -16,21 +16,21 @@ struct SystemNavigationView: View {
     var subTabAnimation: Namespace.ID
     
     var body: some View {
-        HStack(alignment: .center, spacing: 8) {
-            HStack(spacing: 2) {
+        HStack(alignment: .center, spacing: 6) {
+            HStack(spacing: 1.5) {
                 ForEach(SystemSubTab.allCases) { tab in
                     Button {
                         withAnimation(.spring(response: 0.24, dampingFraction: 0.8)) {
                             selectedSubTab = tab
                         }
                     } label: {
-                        HStack(spacing: 3.5) {
+                        HStack(spacing: 3) {
                             Image(systemName: tab.iconName)
-                                .font(.system(size: 9.5))
+                                .font(.system(size: 9))
                             Text(tab.rawValue)
-                                .font(.system(size: 11, weight: selectedSubTab == tab ? .semibold : .medium))
+                                .font(.system(size: 10.5, weight: selectedSubTab == tab ? .semibold : .medium))
                         }
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 7)
                         .frame(maxHeight: .infinity)
                         .background {
                             if selectedSubTab == tab {
@@ -46,21 +46,22 @@ struct SystemNavigationView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(2.5)
-            .frame(height: 28)
+            .padding(2)
+            .frame(height: 27)
             .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                RoundedRectangle(cornerRadius: 7.5, style: .continuous)
                     .fill(Color.primary.opacity(0.05))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        RoundedRectangle(cornerRadius: 7.5, style: .continuous)
                             .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
                     )
             )
             
-            Spacer()
+            Spacer(minLength: 4)
             
-            Text(selectedSubTab == .cpu ? "按整机绝对算力排序" : "按物理内存大小排序")
-                .font(.system(size: 10.5))
+            Text(selectedSubTab == .cpu ? "按整机算力排序" : "按物理内存排序")
+                .font(.system(size: 10))
+                .lineLimit(1)
                 .foregroundStyle(.tertiary)
         }
     }

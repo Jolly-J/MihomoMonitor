@@ -69,7 +69,7 @@ struct ActiveConnectionRow: View {
                 }
             }
         }
-        .padding(8.5)
+        .padding(7.5)
         .background(
             RoundedRectangle(cornerRadius: 8.5, style: .continuous)
                 .fill(Color(NSColor.controlBackgroundColor))

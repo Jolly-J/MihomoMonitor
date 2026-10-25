@@ -21,53 +21,49 @@ struct TrafficNavigationView: View {
     var body: some View {
         VStack(spacing: 6) {
             // One Single Row for Both Switchers with Exactly Matching 28pt Heights
-            HStack(alignment: .center, spacing: 8) {
+            HStack(alignment: .center, spacing: 6) {
                 // Left: Compact Tabs (Height: 28pt)
-                HStack(spacing: 2) {
+                HStack(spacing: 1.5) {
                     ForEach(MonitorTab.allCases) { tab in
                         Button {
                             withAnimation(.spring(response: 0.24, dampingFraction: 0.8)) {
                                 selectedTab = tab
                             }
                         } label: {
-                            HStack(spacing: 3.5) {
-                                Image(systemName: tab.iconName)
-                                    .font(.system(size: 9.5))
-                                Text(tab.rawValue)
-                                    .font(.system(size: 11, weight: selectedTab == tab ? .semibold : .medium))
-                            }
-                            .padding(.horizontal, 8)
-                            .frame(maxHeight: .infinity)
-                            .background {
-                                if selectedTab == tab {
-                                    RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                        .fill(Color.accentColor)
-                                        .matchedGeometryEffect(id: "mainTabPill", in: tabAnimation)
-                                        .shadow(color: Color.accentColor.opacity(0.3), radius: 3, y: 1)
+                            Text(tab.rawValue)
+                                .font(.system(size: 10.5, weight: selectedTab == tab ? .semibold : .medium))
+                                .padding(.horizontal, 6)
+                                .frame(maxHeight: .infinity)
+                                .background {
+                                    if selectedTab == tab {
+                                        RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                            .fill(Color.accentColor)
+                                            .matchedGeometryEffect(id: "mainTabPill", in: tabAnimation)
+                                            .shadow(color: Color.accentColor.opacity(0.3), radius: 3, y: 1)
+                                    }
                                 }
-                            }
-                            .contentShape(Rectangle())
-                            .foregroundStyle(selectedTab == tab ? .white : .secondary)
+                                .contentShape(Rectangle())
+                                .foregroundStyle(selectedTab == tab ? .white : .secondary)
                         }
                         .buttonStyle(.plain)
                     }
                 }
-                .padding(2.5)
-                .frame(height: 28)
+                .padding(2)
+                .frame(height: 27)
                 .background(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    RoundedRectangle(cornerRadius: 7.5, style: .continuous)
                         .fill(Color.primary.opacity(0.05))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            RoundedRectangle(cornerRadius: 7.5, style: .continuous)
                                 .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
                         )
                 )
                 
-                Spacer()
+                Spacer(minLength: 4)
                 
-                // Right: Compact Time Filter Pills (Height: Exactly 28pt)
+                // Right: Compact Time Filter Pills (Height: Exactly 27pt)
                 if selectedTab != .active {
-                    HStack(spacing: 2) {
+                    HStack(spacing: 1.5) {
                         ForEach(TimeRange.allCases) { range in
                             Button {
                                 withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
@@ -75,8 +71,8 @@ struct TrafficNavigationView: View {
                                 }
                             } label: {
                                 Text(range.rawValue)
-                                    .font(.system(size: 10.5, weight: selectedTimeRange == range ? .semibold : .regular))
-                                    .padding(.horizontal, 7)
+                                    .font(.system(size: 10, weight: selectedTimeRange == range ? .semibold : .regular))
+                                    .padding(.horizontal, 5)
                                     .frame(maxHeight: .infinity)
                                     .background {
                                         if selectedTimeRange == range {
@@ -91,13 +87,13 @@ struct TrafficNavigationView: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(2.5)
-                    .frame(height: 28)
+                    .padding(2)
+                    .frame(height: 27)
                     .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        RoundedRectangle(cornerRadius: 7.5, style: .continuous)
                             .fill(Color.primary.opacity(0.05))
                             .overlay(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                RoundedRectangle(cornerRadius: 7.5, style: .continuous)
                                     .strokeBorder(Color.primary.opacity(0.08), lineWidth: 0.5)
                             )
                     )
